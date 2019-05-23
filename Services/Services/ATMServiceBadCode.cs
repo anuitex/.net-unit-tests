@@ -13,19 +13,13 @@ using Services.Exceptions;
 
 namespace Services.Services
 {
-    public class ATMService : IATMService
+    public class ATMServiceBadCode : IATMService
     {
-        private readonly IATMRepository _aTMRepository;
-        private readonly ICurrencyHttpService _currencyHttpService;
-
-        public ATMService(IATMRepository aTMRepository, ICurrencyHttpService currencyHttpService) {
-            _aTMRepository = aTMRepository;
-            _currencyHttpService = currencyHttpService;
-        }
+        private readonly ATMRepository _aTMRepository = new ATMRepository(new ApplicationDbContext());
+        private readonly CurrencyHttpService _currencyHttpService = new CurrencyHttpService();
 
         public async Task InitATM()
         {
-           
             await _aTMRepository.CreateAsync(new Repositories.Models.BankTransaction() { Amount = 10000, ATMAddress = "Prospekt Nauki 37", IsDebit = true, TransactionDate = DateTime.Now });
         }
 
